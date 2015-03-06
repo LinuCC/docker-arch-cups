@@ -2,18 +2,10 @@ FROM linucc/base-arch-rpi2
 
 MAINTAINER Pascal Ernst "pascal.cc.ernst@gmail.com"
 
-# Install cups. Edit hplip-line for printer-drivers you want to install
+# Install cups
 RUN pacman --noconfirm --needed -Sy \
   && pacman --noconfirm --needed -S cups ghostscript gsfonts samba expect \
-  # Drivers for your printers pleasure
-  # && pacman --noconfirm --needed -S hplip \
   && pacman --noconfirm -Sc
-
-# Disable some cups backend that are unusable within a container
-RUN mkdir /usr/lib/cups/backend-available \
-  && mv /usr/lib/cups/backend/parallel /usr/lib/cups/backend-available \
-  && mv /usr/lib/cups/backend/serial /usr/lib/cups/backend-available \
-  && mv /usr/lib/cups/backend/usb /usr/lib/cups/backend-available
 
 ADD etc-cups /etc/cups
 RUN mkdir -p /etc/cups/ssl
